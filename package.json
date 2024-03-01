@@ -1,0 +1,50 @@
+{
+  "name": "@antify/auth-module",
+  "version": "1.0.0",
+  "license": "MIT",
+  "type": "module",
+  "exports": {
+    ".": {
+      "import": "./dist/module.mjs",
+      "require": "./dist/module.cjs",
+      "types": "./dist/types.d.ts"
+    }
+  },
+  "main": "./dist/module.cjs",
+  "types": "./dist/types.d.ts",
+  "files": [
+    "dist"
+  ],
+  "scripts": {
+    "prepack": "nuxt-module-build",
+    "dev": "nuxi dev playground",
+    "dev:build": "nuxi build playground",
+    "dev:prepare": "nuxt-module-build --stub && nuxi prepare playground",
+    "release": "npm run lint && npm run test && npm run prepack && changelogen --release && npm publish && git push --follow-tags",
+    "lint": "eslint ."
+  },
+  "dependencies": {
+    "@antify/ant-guard": "file:../antify/packages/ant-guard",
+    "@fortawesome/free-solid-svg-icons": "^6.5.1",
+    "@nuxt/kit": "^3.8.2",
+    "@pinia/nuxt": "^0.5.1",
+    "pinia": "^2.1.7"
+  },
+  "devDependencies": {
+    "@antify/database-cli": "file:../database-cli",
+    "@faker-js/faker": "^8.3.1",
+    "@nuxt/eslint-config": "latest",
+    "@nuxt/module-builder": "^0.5.4",
+    "@nuxt/schema": "^3.8.2",
+    "eslint": "latest",
+    "eslint-plugin-storybook": "latest",
+    "nuxt": "^3.8.2",
+    "standard-version": "latest"
+  },
+  "peerDependencies": {
+    "@antify/database": "file:../database",
+    "@antify/database-module": "file:../database-module",
+    "@antify/ui-module": "file:../ui-module",
+    "@antify/validate": "1.14.0"
+  }
+}
