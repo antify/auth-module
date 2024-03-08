@@ -6,10 +6,11 @@ import {
 	addServerHandler,
 	addPlugin,
 	addTemplate,
-	addLayout,
-	addImports
+	addImportsDir,
+	addServerPlugin
 } from '@nuxt/kit'
-import {mailTemplates} from './runtime/server/mailTemplates'
+// import {mailTemplates} from './runtime/server/mailTemplates'
+import type {Permission} from "./runtime/types";
 
 export type ModuleOptions = {
 	/**
@@ -28,7 +29,8 @@ export type ModuleOptions = {
 	jwtSecret: string;
 
 	/**
-	 * Expiration time in seconds for the json web token
+	 * Expiration time in minutes for the json web token.
+	 * Default is 8 hours (480 minutes)
 	 */
 	jwtExpiration: number;
 
@@ -42,6 +44,18 @@ export type ModuleOptions = {
 	 * Must return a defineDatabaseHandler();
 	 */
 	databaseHandler: string;
+
+	/**
+	 * The name of the cookie to store the jwt token.
+	 * Default is antt
+	 */
+	tokenCookieName: string;
+
+	/**
+	 * List of permissions, that are available in the system.
+	 * This list can get extended by other modules.
+	 */
+	permissions: Permission[];
 };
 
 // TODO:: on delete tenant, delete user provider accesses and roles
@@ -60,14 +74,22 @@ export default defineNuxtModule<ModuleOptions>({
 
 		const {resolve} = createResolver(import.meta.url);
 		const runtimeDir = fileURLToPath(new URL('./runtime', import.meta.url));
-		const resolveRuntimeModule = (path: string) => resolve('./runtime', path)
 
 		// TODO:: validate options
 		// TODO:: validate, that the main provider id is in the providers
 		// TODO:: validate, provider.id is unique
+		const tokenCookieName = options.tokenCookieName || 'antt'
+		options.tokenCookieName = tokenCookieName;
+		options.jwtExpiration = options.jwtExpiration || 480;
+		options.permissions = options.permissions || [];
 		nuxt.options.runtimeConfig.authModule = options
 
-		const databaseHandlerPath = resolve(nuxt.options.rootDir, options.databaseHandler)
+		// Public runtime config
+		nuxt.options.runtimeConfig.public.authModule = {
+			tokenCookieName
+		}
+
+		const databaseHandlerPath = resolve(nuxt.options.rootDir, options.databaseHandler);
 
 		// Make the database handler available in runtime
 		nuxt.hook('nitro:config', (nitroConfig) => {
@@ -96,9 +118,32 @@ export default defineNuxtModule<ModuleOptions>({
 			global: true
 		})
 
-		addPlugin(resolve('./runtime/plugins/auth'))
+		addServerPlugin(resolve(runtimeDir, 'server/plugins/permissions'));
+		addImportsDir(resolve(runtimeDir, 'composables'));
 
-		nuxt.hook('antMailerModule:registerTemplates', () => mailTemplates)
+		// nuxt.hook('mailerModule:registerTemplates', () => mailTemplates)
+
+		// TODO:: May write it into a file in dist dir with types, cuz it does not change after build
+		nuxt.hook('modules:done', async () => {
+			// TODO:: type hook
+			const permissions = await nuxt.callHook('authModule:register-permissions') || [];
+
+			nuxt.options.runtimeConfig.authModule.permissions = permissions;
+		});
+
+		// TODO:: only register in dev mode!
+		addServerHandler({
+			route: '/api/auth-module/dev/jwt-form/create-jwt',
+			method: 'post',
+			handler: resolve(runtimeDir, 'server/api/dev/jwt-form/create-jwt.post')
+		});
+
+		// TODO:: only register in dev mode!
+		addServerHandler({
+			route: '/api/auth-module/dev/jwt-form/all-permissions',
+			method: 'get',
+			handler: resolve(runtimeDir, 'server/api/dev/jwt-form/all-permissions.get')
+		});
 
 		addServerHandler({
 			route: '/api/auth-module/login',
@@ -111,13 +156,13 @@ export default defineNuxtModule<ModuleOptions>({
 		// 	method: "post",
 		// 	handler: resolve(runtimeDir, "server/api/register.post")
 		// })
-		//
+
 		// addServerHandler({
 		// 	route: "/api/auth-module/forgot-password",
 		// 	method: "post",
 		// 	handler: resolve(runtimeDir, "server/api/forgot-password.post")
 		// })
-		//
+
 		// addServerHandler({
 		// 	route: "/api/auth-module/reset-password",
 		// 	method: "post",

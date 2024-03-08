@@ -1,6 +1,6 @@
 <script setup lang='ts'>
 import { permissions } from '../../src/runtime/server/permissions';
-import { type JsonWebToken } from '@antify/ant-guard';
+import {type JsonWebToken} from '../../src/runtime/types';
 
 const defaultToken: JsonWebToken = {
   id: 'an-user-id',

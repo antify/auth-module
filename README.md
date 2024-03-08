@@ -1,6 +1,46 @@
-# Ant Auth Module
+# Auth Module
 
-TODO:: description
+This module is responsible for handling user authentication and authorization.
+It ships with a set of components and utils to make it easy to integrate authentication and authorization into your application.
+
+## Usage
+
+### Installation
+
+```bash
+pnpm i @antify/auth-module
+```
+
+Add it to your `nuxt.config.ts`:
+
+```typescript
+export default {
+	modules: [
+		'@antify/auth-module'
+	]
+}
+```
+
+### Configuration
+
+```typescript
+TODO
+```
+
+## Components
+
+TODO:: Describe it
+
+- Login page
+- Forgot password page
+- Reset password page
+
+## E-Mail Templates
+
+TODO:: Describe it
+
+- Forgot password
+- Reset password
 
 ## TODO::
 

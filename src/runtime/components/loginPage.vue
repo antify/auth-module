@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import {validator as _validator, type Input} from '../glue/login.post';
 import {type LocationAsRelativeRaw} from 'vue-router';
+import {refreshCookie} from "#imports";
 
 const props = defineProps<{
 	provider: string
@@ -8,22 +9,23 @@ const props = defineProps<{
 	forgotPasswordRoute: LocationAsRelativeRaw
 }>();
 const emit = defineEmits(['login']);
+const {tokenCookieName} = useRuntimeConfig().public.authModule;
 const route = useRoute();
-
+const uiClient = useUiClient();
 const formData = ref<Input>({
 	email: 'admin@admin.de',
-	password: 'admin2',
+	password: 'admin',
 	// TODO:: rename inviteToken to something cryptic short in query
 	inviteToken: route.query?.inviteToken as string,
 });
 const validator = reactive(_validator);
 const loginError = ref<string | null>(null);
-
 const {
 	data,
 	error,
 	execute,
-	status
+	status,
+	pending
 } = useFetch('/api/auth-module/login', {
 	method: 'post',
 	body: formData,
@@ -32,6 +34,10 @@ const {
 	},
 	watch: false,
 	immediate: false,
+	onResponse() {
+		// Give all watchers, which have an eye on the cookie, the chance to react
+		refreshCookie(tokenCookieName)
+	}
 });
 
 watch(error, (e) => uiClient.handler.handleResponseError(e));
@@ -47,12 +53,12 @@ async function onLogin() {
 
 	await execute();
 
-	if (data.value.success) {
+	if (data.value?.success) {
 		return emit('login');
 	}
 
-	if (data.value.invalidCredentials || data.value.banned) {
-		loginError.value = data.value.invalidCredentials || data.value.banned;
+	if (data.value?.invalidCredentials || data.value?.banned) {
+		loginError.value = data.value?.invalidCredentials || data.value?.banned;
 	}
 }
 

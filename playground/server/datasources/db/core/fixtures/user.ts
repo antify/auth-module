@@ -1,6 +1,6 @@
 import {defineFixture} from '@antify/database';
 import {type User} from '../schemas/user';
-import {ADMIN_AUTH_ID, EMPLOYEE_AUTH_ID} from '../../../../../../src/runtime/server/datasources/fixtures/auth';
+import {ADMIN_AUTH_ID, EMPLOYEE_AUTH_ID} from './auth';
 
 export const ADMIN_USER_ID = '63f73526b5db16c4a92d6c37';
 export const EMPLOYEE_USER_ID = '63f73526b5db16c4a92d6c38';

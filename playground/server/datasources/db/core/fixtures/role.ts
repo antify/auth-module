@@ -1,6 +1,6 @@
-import {defineFixture} from "@antify/database";
-import {PermissionId} from "../../permissions";
-import {type Role} from "../schemas/role";
+import {defineFixture} from '@antify/database';
+import {PermissionId} from "../../../../../../src/runtime/server/permissions";
+import {type Role} from "../../../../../../src/runtime/server/datasources/schemas/role";
 import {TEST_TENANT_ID} from "../fixture-utils/tenant";
 
 export const ADMIN_ROLE_ID = "63f73526b5db16c4a92d6c33";

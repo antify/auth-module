@@ -1,5 +1,5 @@
-import {Role} from "./role"
-import {Auth} from "./auth"
+import {type Role} from "./role"
+import {type Auth} from "./auth"
 import {defineSchema} from "@antify/database";
 import mongoose from 'mongoose';
 

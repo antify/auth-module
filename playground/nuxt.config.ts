@@ -1,18 +1,28 @@
-const passwordSalt = '#a!SaveSalt123';
+import {PASSWORD_SALT} from "./server/datasources/db/core/fixtures/auth";
+import {PermissionId} from "./server/permissions";
 
 export default defineNuxtConfig({
 	ssr: false,
   modules: [
 		'../src/module',
 		'@antify/ui-module',
-		'@antify/database-module',
-		// '@antify/dev-module'
+		'@antify/database-module'
   ],
   authModule: {
     databaseHandler: './server/datasources/db/core/database-handler',
     mainProviderId: 'core', // TODO:: <-- remove. With the database handler this should not needed anymore
     jwtSecret: '#a!SuperSecret123',
-    jwtExpiration: '8h',
-    passwordSalt
+    passwordSalt: PASSWORD_SALT
   },
+	devtools: {enabled: true},
+	hooks: {
+		'authModule:register-permissions': () => {
+			return [
+				{
+					id: PermissionId.CAN_READ_SECRET_DATA,
+					name: 'Can read secret data in playground'
+				}
+			]
+		}
+	}
 });

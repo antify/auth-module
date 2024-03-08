@@ -1,4 +1,5 @@
-import {type JsonWebTokenProvider, hashPassword, useServerGuard} from '@antify/ant-guard';
+import {useAuth} from '../auth';
+import {type JsonWebTokenProvider} from '../../types';
 import {type Role, type AuthProviderAccess} from '../datasources/schemas';
 import defineDatabaseHandler from '#authModuleDatabaseHandler';
 import {type Input, validator} from '../../glue/login.post';
@@ -14,10 +15,11 @@ export default defineEventHandler(async (event: H3Event) => {
 		throw new Error(validator.getErrorsAsString());
 	}
 
+	const authUtil = useAuth();
 	const databaseHandler = (defineDatabaseHandler as DatabaseHandler);
 	// TODO:: change email to general identifier
 	const auth = await databaseHandler
-		.findOneAuthByPassword(requestData.email, await hashPassword(requestData.password, useRuntimeConfig().authModule.passwordSalt));
+		.findOneAuthByPassword(requestData.email, await authUtil.hashPassword(requestData.password));
 
 	if (!auth) {
 		return {
@@ -28,7 +30,7 @@ export default defineEventHandler(async (event: H3Event) => {
 	if (auth.isBanned) {
 		return {
 			banned: 'Your account is banned. Please contact the support.'
-		}
+		};
 	}
 
 	const client = await databaseHandler.getDatabaseClient();
@@ -42,9 +44,8 @@ export default defineEventHandler(async (event: H3Event) => {
 			path: 'role',
 			model: RoleModel
 		});
-	const guard = useServerGuard(event);
 
-	await guard.loginUser(event, {
+	await authUtil.login( event, {
 		id: auth.id,
 		isSuperAdmin: auth.isSuperAdmin,
 		providers: authProviderAccesses.map<JsonWebTokenProvider>(authProviderAccess => ({
