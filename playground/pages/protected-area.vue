@@ -1,6 +1,8 @@
 <script lang="ts" setup>
 // TODO:: check client side if token is fine
 import {PermissionId} from '~/server/permissions';
+import {useUi, useGuard, useFetch} from '#imports';
+import {ref, watch} from 'vue';
 
 const PROVIDER = 'core'
 const {ColorType} = useUi();

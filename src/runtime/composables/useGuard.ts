@@ -1,7 +1,8 @@
 import * as jose from 'jose';
 import {Guard} from '../guard';
 import type {JsonWebToken} from '../types';
-import {refreshCookie, useCookie} from '#imports';
+import {refreshCookie, useCookie, useRuntimeConfig} from '#imports';
+import {computed} from 'vue';
 
 export const useGuard = () => {
 	const {tokenCookieName} = useRuntimeConfig().public.authModule;

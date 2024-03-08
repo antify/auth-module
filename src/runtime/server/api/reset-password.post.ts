@@ -1,4 +1,4 @@
-import { readBody } from 'h3'
+import { readBody, defineEventHandler } from '#imports'
 import {
   Input,
   serverValidator as validator,

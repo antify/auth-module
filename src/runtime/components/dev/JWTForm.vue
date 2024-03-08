@@ -3,6 +3,8 @@ import type {JsonWebToken} from '../../types';
 import ProviderBox from './ProviderBox.vue';
 import {format, getUnixTime} from 'date-fns';
 import {faPlus} from '@fortawesome/free-solid-svg-icons';
+import {defineProps, defineEmits, ref, computed, watch, onMounted} from 'vue';
+import {useGuard, useFetch, useUiClient} from '#imports';
 
 const props = withDefaults(defineProps<{
 	open: boolean

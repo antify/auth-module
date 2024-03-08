@@ -1,7 +1,8 @@
-import type {H3Event} from "h3";
-import {isAuthorizedHandler, isLoggedInHandler} from "../../../src/runtime/server/handlers";
-import {PermissionId} from "~/server/permissions";
-import {getContext} from "#database-module";
+import type {H3Event} from 'h3';
+import {isAuthorizedHandler, isLoggedInHandler} from '../../../src/runtime/server/handlers';
+import {PermissionId} from '~/server/permissions';
+import {getContext} from '#database-module';
+import {defineEventHandler} from '#imports';
 
 export default defineEventHandler(async (event: H3Event) => {
 	const {provider, tenantId} = getContext(event);
@@ -10,6 +11,6 @@ export default defineEventHandler(async (event: H3Event) => {
 	await isAuthorizedHandler(event, PermissionId.CAN_READ_SECRET_DATA, provider, tenantId);
 
 	return {
-		default: "Secret data!",
+		default: 'Secret data!',
 	};
 });

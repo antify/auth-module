@@ -22,14 +22,13 @@
     "dev:prepare": "nuxt-module-build build --stub && nuxt-module-build prepare && nuxi prepare playground",
     "release": "standard-version && pnpm publish && git push --follow-tags",
     "lint": "eslint .",
-		"test": "vitest run"
+    "test": "vitest run"
   },
   "dependencies": {
     "@fortawesome/free-solid-svg-icons": "^6.5.1",
     "@nuxt/kit": "^3.10.3",
     "@pinia/nuxt": "^0.5.1",
     "cookie-es": "^1.0.0",
-    "h3": "^1.11.1",
     "jose": "^5.2.2",
     "pinia": "^2.1.7"
   },
@@ -42,6 +41,7 @@
     "date-fns": "^3.3.1",
     "eslint": "^8.57.0",
     "eslint-plugin-storybook": "^0.8.0",
+    "h3": "^1.11.1",
     "jsdom": "^24.0.0",
     "nuxt": "^3.10.3",
     "standard-version": "^9.5.0",

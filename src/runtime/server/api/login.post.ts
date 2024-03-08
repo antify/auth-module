@@ -4,7 +4,8 @@ import {type Role, type AuthProviderAccess} from '../datasources/schemas';
 import defineDatabaseHandler from '#authModuleDatabaseHandler';
 import {type Input, validator} from '../../glue/login.post';
 import {type DatabaseHandler} from '../../types';
-import {type H3Event, readBody} from 'h3';
+import {type H3Event} from 'h3';
+import {defineEventHandler, readBody} from '#imports';
 
 export default defineEventHandler(async (event: H3Event) => {
 	const requestData = await readBody<Input>(event);

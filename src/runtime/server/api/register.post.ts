@@ -1,5 +1,5 @@
 import { getDatabaseClientFromRequest } from '@antify/kit'
-import { readBody } from 'h3'
+import { readBody } from '#imports'
 import { handleCreateToken, hashRawPassword } from '../utils/tokenUtil'
 import { Response, Input, validator } from '../../glue/register.post'
 import { extendSchemas } from '../datasources/schema.extensions'

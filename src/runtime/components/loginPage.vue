@@ -1,7 +1,8 @@
 <script setup lang="ts">
 import {validator as _validator, type Input} from '../glue/login.post';
 import {type LocationAsRelativeRaw} from 'vue-router';
-import {refreshCookie} from "#imports";
+import {refreshCookie, useRuntimeConfig, useUiClient, useUi, useNuxtApp, useFetch, useRoute} from "#imports";
+import {defineProps, defineEmits, ref, reactive, watch, onBeforeUnmount} from 'vue';
 
 const props = defineProps<{
 	provider: string

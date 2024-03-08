@@ -1,7 +1,8 @@
-import {H3Event, createError} from 'h3';
+import {type H3Event} from 'h3';
 import {useAuth} from './auth';
 import * as jose from 'jose';
 import {Guard} from '../guard';
+import {createError} from '#imports';
 
 export const isLoggedInHandler = async (event: H3Event): Promise<Guard> => {
 	let guard: Guard;

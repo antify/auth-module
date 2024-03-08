@@ -14,11 +14,6 @@ import type {Permission} from "./runtime/types";
 
 export type ModuleOptions = {
 	/**
-	 * The main database provider's id where users and there accesses get stored
-	 */
-	mainProviderId: string;
-
-	/**
 	 * Salt to hash the password stored in database
 	 */
 	passwordSalt: string;
@@ -118,7 +113,6 @@ export default defineNuxtModule<ModuleOptions>({
 			global: true
 		})
 
-		addServerPlugin(resolve(runtimeDir, 'server/plugins/permissions'));
 		addImportsDir(resolve(runtimeDir, 'composables'));
 
 		// nuxt.hook('mailerModule:registerTemplates', () => mailTemplates)

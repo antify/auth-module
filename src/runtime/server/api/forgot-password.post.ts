@@ -1,4 +1,4 @@
-import { readBody } from 'h3'
+import { readBody } from '#imports'
 import { getDatabaseClient, SingleConnectionClient } from '@antify/database'
 import { Input, validator, Response } from '../../glue/forgot-password.post'
 import { extendSchemas } from '../datasources/schema.extensions'

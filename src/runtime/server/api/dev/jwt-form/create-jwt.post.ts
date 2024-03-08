@@ -1,6 +1,11 @@
 import {type JsonWebToken} from '../../../../types';
 import {useAuth} from '../../../auth';
-import {setCookie} from '#imports';
+import {
+	setCookie,
+	defineEventHandler,
+	useRuntimeConfig,
+	readBody
+} from '#imports';
 
 export default defineEventHandler(async (event) => {
 	// TODO:: only call in dev mode!

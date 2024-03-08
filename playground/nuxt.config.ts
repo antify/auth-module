@@ -3,6 +3,9 @@ import {PermissionId} from "./server/permissions";
 
 export default defineNuxtConfig({
 	ssr: false,
+	imports: {
+		autoImport: false
+	},
   modules: [
 		'../src/module',
 		'@antify/ui-module',
@@ -10,7 +13,6 @@ export default defineNuxtConfig({
   ],
   authModule: {
     databaseHandler: './server/datasources/db/core/database-handler',
-    mainProviderId: 'core', // TODO:: <-- remove. With the database handler this should not needed anymore
     jwtSecret: '#a!SuperSecret123',
     passwordSalt: PASSWORD_SALT
   },
