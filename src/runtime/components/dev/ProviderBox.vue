@@ -1,7 +1,7 @@
 <script lang='ts' setup>
 import {type Permission} from '../../types';
 import {faMultiply} from '@fortawesome/free-solid-svg-icons';
-import {defineEmits, defineProps, withDefaults, computed} from 'vue';
+import {withDefaults, computed} from 'vue';
 
 const emit = defineEmits([
 	'update:providerId',
